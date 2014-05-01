@@ -18,39 +18,41 @@ defmodule Tree do
          end 
       {:traverse, who} ->
          send who, {:found, value}
-         unless left == nil do
-           send left, {:traverse, who}
-         end
-         unless right == nil do
-           send right, {:traverse, who}
-         end
+         traverse_at left, who
+         traverse_at right, who  
          s           
     end
     tree_node(new_s)
   end
+  
+  defp traverse_at where, who do
+    unless where == nil do
+      send where, {:traverse, who}
+    end
+  end
 
-  defp insert_left({value, left, right}, what, who) do
-    if left == nil do
-      new_left = spawn_node(what)
-      send who, :ok
+  defp insert_left(s = {value, left, right}, what, who) do
+    insert_at s, what, left, who, fn new_left ->
       {value, new_left, right}
-    else 
-      send left, {:insert, what, who }
-      {value, left, right} 
     end
   end
 
-  defp insert_right(s, what, who) do
-    case s do
-      {value, left, nil} -> 
-         right =  spawn_node(what)
-         send who, :ok
-         {value, left, right}
-      {_, _, right}  -> 
-         send right, {:insert, what, who }
-         s
+  defp insert_right(s = {value, left, right}, what, who) do
+    insert_at s, what, right, who, fn new_right ->
+      {value, left, new_right} 
     end
   end
+
+  defp insert_at(s, what, where, who, how) do
+    if where == nil do
+      new_node = spawn_node(what)
+      send who, :ok
+      how.(new_node)
+    else
+      send where, {:insert, what, who}
+      s
+    end
+  end  
 end
 
 	
