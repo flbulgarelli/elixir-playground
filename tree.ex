@@ -1,6 +1,11 @@
 defmodule Tree do
+ 
   def spawn_node(value) do
-     spawn fn -> tree_node({value, nil, nil}) end
+    spawn_link fn -> new_node(value) end
+  end
+  
+  def new_node(value) do
+     tree_node({value, nil, nil})
   end
   
   def tree_node(s = {value, left, right}) do
@@ -26,7 +31,7 @@ defmodule Tree do
 
   defp insert_left({value, left, right}, what, who) do
     if left == nil do
-      new_left = spawn_link fn -> tree_node({what, nil, nil}) end
+      new_left = spawn_node(what)
       send who, :ok
       {value, new_left, right}
     else 
@@ -38,7 +43,7 @@ defmodule Tree do
   defp insert_right(s, what, who) do
     case s do
       {value, left, nil} -> 
-         right =  spawn_link fn -> tree_node({what, nil, nil}) end
+         right =  spawn_node(what)
          send who, :ok
          {value, left, right}
       {_, _, right}  -> 
