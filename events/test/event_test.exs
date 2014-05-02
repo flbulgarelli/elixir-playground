@@ -1,7 +1,5 @@
 import Event
 
-ExUnit.start
-
 defmodule EventTest do
   use ExUnit.Case
 
