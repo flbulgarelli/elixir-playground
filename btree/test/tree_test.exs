@@ -1,8 +1,31 @@
-import Tree, only: [spawn_node: 1]
+import Tree, only: [spawn_node: 1, empty: 0]
 
 ExUnit.start
 
 defmodule TreeTest do
+  use ExUnit.Case
+  
+  test "can create empty tree" do
+    tree = spawn_link fn -> empty end
+    
+    send tree, {:traverse, self}
+    
+    refute_receive {:found, _}
+  end
+
+  test "can insert elements into tree" do
+    tree = spawn_link fn -> empty end
+   
+    send tree, {:insert, 3, self}
+    send tree, {:insert, 4, self}
+    send tree, {:traverse, self}   
+
+    assert_receive {:found, 3}
+    assert_receive {:found, 4}
+  end 
+end
+
+defmodule NodeTest do
   use ExUnit.Case
 
   test "can insert elements" do

@@ -1,4 +1,24 @@
 defmodule Tree do
+  
+  def empty do
+      new_tree nil
+  end
+
+  def new_tree(nil) do
+     receive do
+       {:insert, what, who} ->
+          root = spawn_node what
+          send who, :ok
+          new_tree root
+     end
+  end
+  
+  def new_tree(root) do
+     receive do
+       message -> send root, message
+     end
+     new_tree root 
+  end
  
   def spawn_node(value) do
     spawn_link fn -> new_node(value) end
