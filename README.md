@@ -15,6 +15,8 @@ Pending things to test
   * gen_server
   * gen_event
   * gen_fsm
+  
+
 Proposed excersises
 ====================
   * KV Store
@@ -26,9 +28,8 @@ Proposed excersises
   
 Documentation and Links
 ======================
-http://learnyousomeerlang.com/clients-and-servers
-http://learnyousomeerlang.com/what-is-otp#the-basic-server
-http://www.erlang.org/doc/design_principles/gen_server_concepts.html
-http://www.erlang.org/doc/man/gen_server.html
-http://www.erlang.org/doc/reference_manual/processes.html#id82744
-http://marcelog.github.io/articles/erlang_link_vs_monitor_difference.html
+* http://learnyousomeerlang.com/what-is-otp#the-basic-server
+* http://www.erlang.org/doc/design_principles/gen_server_concepts.html
+* http://www.erlang.org/doc/man/gen_server.html
+* http://www.erlang.org/doc/reference_manual/processes.html#id82744
+* http://marcelog.github.io/articles/erlang_link_vs_monitor_difference.html
