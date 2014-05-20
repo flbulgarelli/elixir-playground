@@ -37,3 +37,4 @@ Documentation and Links
 * http://www.erlang.org/doc/design_principles/sup_princ.html
 * http://elixir-lang.org/docs/stable/GenServer.Behaviour.html
 * http://learnyousomeerlang.com/designing-a-concurrent-application
+* http://devintorr.es/blog/2013/06/11/elixir-its-not-about-syntax/
