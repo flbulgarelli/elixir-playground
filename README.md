@@ -33,3 +33,7 @@ Documentation and Links
 * http://www.erlang.org/doc/man/gen_server.html
 * http://www.erlang.org/doc/reference_manual/processes.html#id82744
 * http://marcelog.github.io/articles/erlang_link_vs_monitor_difference.html
+* http://www.erlang.org/doc/getting_started/robustness.html
+* http://www.erlang.org/doc/design_principles/sup_princ.html
+* http://elixir-lang.org/docs/stable/GenServer.Behaviour.html
+* http://learnyousomeerlang.com/designing-a-concurrent-application
