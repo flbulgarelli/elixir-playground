@@ -7,10 +7,11 @@ defmodule QuestionsList do
      receive do 
        {:add_pupil, pupil} -> 
            new {[pupil|pupils], assistants}
-       {:add_assistant, assistant} ->
+       {:add_assistant, assistant, creator} ->
+           send creator, :added
            new {pupils, [assistant|assistants]}
        {:question, question} ->
-           Enum.each assistants, &Assistant.do_answer(&1, question)
+           Enum.each assistants, &Assistant.request_answer(&1, question)
            new s
        {:answer, answer} ->
            Enum.each pupils, &Pupil.accept_answer(&1, answer)
@@ -22,8 +23,8 @@ defmodule QuestionsList do
     send self, {:add_pupil, pupil}
   end
 
-  def add_assistant(self, assistant) do
-    send self, {:add_assistant, assistant}
+  def add_assistant(self, assistant, creator) do
+    send self, {:add_assistant, assistant, creator}
   end
 
   def make_question(self, question) do

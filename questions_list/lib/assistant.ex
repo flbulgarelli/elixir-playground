@@ -1,20 +1,33 @@
 defmodule Assistant do
   def start(list, notifier) do
-    spawn_link fn -> 
-      QuestionsList.add_assistant list, self
+    creator = self
+    assistant = spawn_link fn -> 
+      QuestionsList.add_assistant list, self, creator
       new {list, notifier}
+    end
+    receive do
+      :added -> assistant
+    after 
+       1000 -> raise "not ready"
     end
   end
 
   defp new(s = {list, notifier}) do
     receive do
-       {:question, sender, question} ->
-         send notifier, {:question, sender, question} 
+       {:question, question} ->
+         send notifier, {:question, self, question} 
+       {:answer, answer} ->  
+         QuestionsList.accept_answer list, answer
     end
     new s
   end
 
-  def do_answer(self, sender, question) do
+  def request_answer(self, question) do
     send self, {:question, question}   
   end
+
+  def do_answer(self, answer) do
+    send self, {:answer, answer}
+  end
+
 end
