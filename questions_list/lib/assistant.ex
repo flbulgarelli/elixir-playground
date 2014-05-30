@@ -1,9 +1,9 @@
 defmodule Assistant do
-  def start(list, notifier) do
+  def start(list, notifier, moderator) do
     creator = self
     assistant = spawn_link fn -> 
       QuestionsList.add_assistant list, self, creator
-      new {list, notifier}
+      new {list, notifier, moderator}
     end
     receive do
       :added -> assistant
@@ -12,22 +12,22 @@ defmodule Assistant do
     end
   end
 
-  defp new(s = {list, notifier}) do
+  defp new(s = {list, notifier, moderator}) do
     receive do
-       {:question, question} ->
-         send notifier, {:question, self, question} 
-       {:answer, answer} ->  
-         QuestionsList.accept_answer list, answer
+       {ref, {:question, question}} ->
+         send notifier, {ref, {:question, self, question}} 
+       {ref, {:answer, answer}} ->  
+         QuestionsList.accept_answer moderator, ref, answer
     end
     new s
   end
 
-  def request_answer(self, question) do
-    send self, {:question, question}   
+  def request_answer(self, ref, question) do
+    send self, {ref, {:question, question}}   
   end
 
-  def do_answer(self, answer) do
-    send self, {:answer, answer}
+  def do_answer(self, ref, answer) do
+    send self, {ref, {:answer, answer}}
   end
 
 end

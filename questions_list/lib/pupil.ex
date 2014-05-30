@@ -8,19 +8,19 @@ defmodule Pupil do
 
   defp new(s={list, notifier}) do
     receive do
-      {:question, question} -> 
-         QuestionsList.make_question(list, question)
-      m = {:answer, answer } ->
+      {ref, {:question, question}} -> 
+         QuestionsList.make_question list, ref, question
+      m = {ref, {:answer, answer }} ->
          send notifier, m
     end
     new s
   end
 
   def make_question(self, question) do
-    send self, {:question, question}
+    send self, {make_ref, {:question, question}}
   end
 
-  def accept_answer(self, answer) do
-    send self, {:answer, answer}
+  def accept_answer(self, ref, answer) do
+    send self, {ref, {:answer, answer}}
   end
 end

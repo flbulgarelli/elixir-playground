@@ -6,15 +6,15 @@ defmodule PupilTest do
 
     Pupil.make_question pupil, "foo"
 
-    assert_receive {:question, "foo"}, 1000
+    assert_receive {_, {:question, "foo"}}, 1000
   end
 
   test "notifies accepted answers" do
     pupil = Pupil.start DeafActor.start, self
 
-    Pupil.accept_answer pupil, "foo"
+    Pupil.accept_answer pupil, make_ref, "foo"
 
-    assert_receive {:answer, "foo" }
+    assert_receive {_, {:answer, "foo" }}
   end
 
 end

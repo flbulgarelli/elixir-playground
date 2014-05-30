@@ -2,19 +2,23 @@ defmodule AssistantTest do
   use ExUnit.Case
 
   test "forwards questions to list" do
-    assistant = Assistant.start SyncActor.start(:added), self
+    l = SyncActor.start(:added)
+    assistant = Assistant.start l, self, l
+    r = make_ref
 
-    Assistant.request_answer assistant, "foo?"
+    Assistant.request_answer assistant, r, "foo?"
 
-    assert_receive {:question, assistant, "foo?"}, 1000
+    assert_receive {^r, {:question, assistant, "foo?"}}, 1000
   end
 
   test "notifies accepted answers" do
-    assistant = Assistant.start MiddleManActor.start(SyncActor.start(:added), self), DeafActor.start
+    l = MiddleManActor.start(SyncActor.start(:added), self)
+    assistant = Assistant.start l, DeafActor.start, l
+    r = make_ref
 
-    Assistant.do_answer assistant, "foo"
+    Assistant.do_answer assistant, r, "foo"
 
-    assert_receive {:answer, "foo"}
+    assert_receive {^r, {:answer, "foo"}}
   end
 
 end
