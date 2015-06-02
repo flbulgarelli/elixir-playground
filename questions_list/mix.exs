@@ -4,7 +4,7 @@ defmodule QuestionsList.Mixfile do
   def project do
     [app: :questions_list,
      version: "0.0.1",
-     elixir: "~> 0.13.1",
+     elixir: "~> 1.0.4",
      deps: deps]
   end
 
