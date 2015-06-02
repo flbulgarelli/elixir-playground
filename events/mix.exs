@@ -4,7 +4,7 @@ defmodule Events.Mixfile do
   def project do
     [app: :events,
      version: "0.0.1",
-     elixir: "~> 0.13.1",
+     elixir: "~> 1.0.4",
      deps: deps]
   end
 
