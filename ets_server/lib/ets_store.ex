@@ -37,11 +37,11 @@ defmodule EtsStore do
   end
 
   def update(table, key, new_value) do
-     case :ets.lookup(table, key) do
-     	[{_key, value}] -> delete(table, key)
+    case :ets.lookup(table, key) do
+    	[{_key, value}] -> delete(table, key)
 			   put(table, key, new_value)
 	[] -> {:error, :not_found}
-     end
+    end
   end
 
 end

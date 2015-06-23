@@ -1,6 +1,3 @@
-import EtsStore
-import ListSearch
-
 defmodule ListSearchTest do
   use ExUnit.Case
 
