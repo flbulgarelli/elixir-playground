@@ -23,9 +23,9 @@ defmodule EtsStore do
 
   def get(table, key) do
     case :ets.lookup(table, key) do
-		  [{_key, value}] -> {:ok, value}
-		  [] -> {:error, :not_found}
-	  end
+	[{_key, value}] -> {:ok, value}
+	[] -> {:error, :not_found}
+    end
   end
 
   def put(table, key, value) do
@@ -33,15 +33,15 @@ defmodule EtsStore do
   end
 
   def delete(table, key) do
-	  :ets.match_delete(table, {key, :_})
-	end
+    :ets.match_delete(table, {key, :_})
+  end
 
-	def update(table, key, new_value) do
-	  case :ets.lookup(table, key) do
-		[{_key, value}] -> delete(table, key)
-                       {:ok, put(table, key, new_value)}
-		[] -> {:error, :not_found}
-	  end
-	end
+  def update(table, key, new_value) do
+    case :ets.lookup(table, key) do
+    	[{_key, value}] -> delete(table, key)
+			   put(table, key, new_value)
+	[] -> {:error, :not_found}
+    end
+  end
 
 end
